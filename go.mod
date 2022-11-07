@@ -1,4 +1,4 @@
-module wbhttpclient
+module github.com/wildberries-tech/wbhttpclient
 
 go 1.18
 
