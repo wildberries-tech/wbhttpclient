@@ -43,8 +43,8 @@ github.com/valyala/fasthttp v1.41.0/go.mod h1:f6VbjjoI3z1NDOZOv17o6RvtRSWxC77seB
 github.com/valyala/fasttemplate v1.2.1 h1:TVEnxayobAdVkhQfrfes2IzOB6o+z4roRkPF52WA1u4=
 github.com/valyala/fasttemplate v1.2.1/go.mod h1:KHLXt3tVN2HBp8eijSv/kGJopbvo7S+qRAEEKiv+SiQ=
 github.com/valyala/tcplisten v1.0.0/go.mod h1:T0xQ8SeCZGxckz9qRXTfG43PvQ/mcWh7FwZEA7Ioqkc=
-gitlab.wildberries.ru/ordo/user-balance/pkg/logger.git v0.0.0-20220912152022-30ac9ce3cad6 h1:sbuwFezUFNl+8M+0SoINE/coB0S2bFde/4R4YduCbRs=
-gitlab.wildberries.ru/ordo/user-balance/pkg/logger.git v0.0.0-20220912152022-30ac9ce3cad6/go.mod h1:wmpuNg5h3Fnbvdrffw1Sd7zjA/Fgvis7eKo4lLtjR9o=
+github.com/wildberries-tech/wblogger v0.0.0-20221108095452-9852fae5d08b h1:PsbqA04dbojNGiM6CVnfAS+WQGdu3aWBUDWfLTecpPM=
+github.com/wildberries-tech/wblogger v0.0.0-20221108095452-9852fae5d08b/go.mod h1:4jzOsZ9+Sw2p7o3VGlQhtHseWcXwsYs4MOEiCvO6Z5Q=
 go.uber.org/atomic v1.7.0 h1:ADUqmZGgLDDfbSL9ZmPxKTybcoEYHgpYfELNoN+7hsw=
 go.uber.org/atomic v1.7.0/go.mod h1:fEN4uk6kAWBTFdckzkM89CLk9XfWZrxpCo0nPH17wJc=
 go.uber.org/goleak v1.1.11 h1:wy28qYRKZgnJTxGxvye5/wgWr1EKjmUDGYox5mGlRlI=

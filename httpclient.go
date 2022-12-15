@@ -2,18 +2,19 @@ package wbhttpclient
 
 import (
 	"context"
+	"fmt"
+	"strconv"
+	"time"
+
 	"crypto/hmac"
 	"crypto/sha256"
 	"crypto/tls"
 	"encoding/base64"
 	"encoding/hex"
 	"encoding/json"
-	"fmt"
 	"github.com/satori/go.uuid"
 	"github.com/valyala/fasthttp"
-	"gitlab.wildberries.ru/ordo/user-balance/pkg/logger.git"
-	"strconv"
-	"time"
+	"github.com/wildberries-tech/wblogger"
 )
 
 type client struct {
@@ -139,7 +140,7 @@ func (c *client) do(ctx context.Context, path string, method string, body []byte
 	reqId := uuid.NewV4().String()
 	reqCtx.req.SetRequestURI(c.host + path)
 	reqCtx.req.Header.SetMethod(method)
-	logger.Debug(ctx, fmt.Sprintf("http-request (%s): Content-type: %s, Authorization: %s, Body: %s, URL: %s",
+	wblogger.Debug(ctx, fmt.Sprintf("http-request (%s): Content-type: %s, Authorization: %s, Body: %s, URL: %s",
 		reqId,
 		string(reqCtx.req.Header.ContentType()),
 		trimAuth(string(reqCtx.req.Header.Peek("Authorization"))),
@@ -155,7 +156,7 @@ func (c *client) do(ctx context.Context, path string, method string, body []byte
 	res := make([]byte, len(resp.Body()))
 	copy(res, resp.Body())
 
-	logger.Debug(ctx, fmt.Sprintf("http-response (%s): %s", reqId, resp.String()))
+	wblogger.Debug(ctx, fmt.Sprintf("http-response (%s): %s", reqId, resp.String()))
 	if resp.StatusCode() < 300 && resp.StatusCode() >= 200 {
 		c.metrics.Inc(method, strconv.Itoa(resp.StatusCode()), reqCtx.metricPath)
 		c.metrics.WriteTiming(start, method, strconv.Itoa(resp.StatusCode()), reqCtx.metricPath)
@@ -212,7 +213,7 @@ func WithHmacSha256Auth(client, key string) RequestOption {
 	return func(req *RequestCtx) {
 		hmacer := hmac.New(sha256.New, []byte(key))
 		if _, err := hmacer.Write(req.req.Body()); err != nil {
-			logger.Error(context.Background(), "WithHmacAuth", err)
+			wblogger.Error(context.Background(), "WithHmacAuth", err)
 		}
 
 		authStr := "hmac-sha256 " + client + ":" + base64.StdEncoding.EncodeToString([]byte(hex.EncodeToString(hmacer.Sum(nil))))

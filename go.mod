@@ -5,7 +5,7 @@ go 1.18
 require (
 	github.com/satori/go.uuid v1.2.0
 	github.com/valyala/fasthttp v1.41.0
-	gitlab.wildberries.ru/ordo/user-balance/pkg/logger.git v0.0.0-20220912152022-30ac9ce3cad6
+	github.com/wildberries-tech/wblogger v0.0.0-20221108095452-9852fae5d08b
 )
 
 require (
