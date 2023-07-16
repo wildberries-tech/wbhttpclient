@@ -91,7 +91,7 @@ func WithHeader(key, value string) RequestOption {
 }
 
 func (c *client) Get(ctx context.Context, path string, opts ...RequestOption) ([]byte, int, error) {
-	return c.do(ctx, path, fasthttp.MethodGet, nil, opts...)
+	return c.Do(ctx, path, fasthttp.MethodGet, nil, opts...)
 }
 
 func (c *client) Post(ctx context.Context, path string, reqObj interface{}, opts ...RequestOption) ([]byte, int, error) {
@@ -104,14 +104,14 @@ func (c *client) Post(ctx context.Context, path string, reqObj interface{}, opts
 		}
 	}
 
-	return c.do(ctx, path, fasthttp.MethodPost, reqBody, opts...)
+	return c.Do(ctx, path, fasthttp.MethodPost, reqBody, opts...)
 }
 
 func (c *client) Put(ctx context.Context, path string, body []byte, opts ...RequestOption) ([]byte, int, error) {
-	return c.do(ctx, path, fasthttp.MethodPut, body, opts...)
+	return c.Do(ctx, path, fasthttp.MethodPut, body, opts...)
 }
 
-func (c *client) do(ctx context.Context, path string, method string, body []byte, opts ...RequestOption) ([]byte, int, error) {
+func (c *client) Do(ctx context.Context, path string, method string, body []byte, opts ...RequestOption) ([]byte, int, error) {
 	deadline := time.Now().Add(c.timeout)
 	if d, ok := ctx.Deadline(); ok && d.Before(deadline) {
 		deadline = d
@@ -171,7 +171,7 @@ func (c *client) do(ctx context.Context, path string, method string, body []byte
 }
 
 func (c *client) GetObject(ctx context.Context, path string, dst interface{}, opts ...RequestOption) (int, error) {
-	body, code, err := c.do(ctx, path, fasthttp.MethodGet, nil, opts...)
+	body, code, err := c.Do(ctx, path, fasthttp.MethodGet, nil, opts...)
 	err2 := json.Unmarshal(body, dst)
 	if err == nil && err2 != nil {
 		err = fmt.Errorf("error unmarshal body (%s): %w", string(body), err2)
@@ -185,7 +185,7 @@ func (c *client) PostObject(ctx context.Context, path string, reqObj, dst interf
 		return 0, fmt.Errorf("error marshal request object: %w", err)
 	}
 
-	body, code, err := c.do(ctx, path, fasthttp.MethodPost, reqBody, opts...)
+	body, code, err := c.Do(ctx, path, fasthttp.MethodPost, reqBody, opts...)
 	if err != nil {
 		return code, err
 	}
@@ -222,7 +222,7 @@ func WithHmacSha256Auth(client, key string) RequestOption {
 }
 
 func (c *client) PostRawBody(ctx context.Context, path string, reqBody []byte, dst interface{}, opts ...RequestOption) (int, error) {
-	body, code, err := c.do(ctx, path, fasthttp.MethodPost, reqBody, opts...)
+	body, code, err := c.Do(ctx, path, fasthttp.MethodPost, reqBody, opts...)
 	if err != nil {
 		return code, err
 	}
