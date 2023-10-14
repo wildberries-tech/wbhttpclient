@@ -90,6 +90,12 @@ func WithHeader(key, value string) RequestOption {
 	}
 }
 
+func WithCookie(key, value string) RequestOption {
+	return func(req *RequestCtx) {
+		req.req.Header.SetCookie(key, value)
+	}
+}
+
 func (c *client) Get(ctx context.Context, path string, opts ...RequestOption) ([]byte, int, error) {
 	return c.Do(ctx, path, fasthttp.MethodGet, nil, opts...)
 }
