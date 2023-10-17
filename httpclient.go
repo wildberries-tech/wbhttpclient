@@ -96,6 +96,12 @@ func WithCookie(key, value string) RequestOption {
 	}
 }
 
+func WithCustom(f func(request *fasthttp.Request)) RequestOption {
+	return func(req *RequestCtx) {
+		f(req.req)
+	}
+}
+
 func (c *client) Get(ctx context.Context, path string, opts ...RequestOption) ([]byte, int, error) {
 	return c.Do(ctx, path, fasthttp.MethodGet, nil, opts...)
 }
