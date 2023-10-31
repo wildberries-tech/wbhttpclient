@@ -152,11 +152,11 @@ func (c *client) Do(ctx context.Context, path string, method string, body []byte
 	reqId := uuid.NewV4().String()
 	reqCtx.req.SetRequestURI(c.host + path)
 	reqCtx.req.Header.SetMethod(method)
-	wblogger.Debug(ctx, fmt.Sprintf("http-request (%s): Content-type: %s, Authorization: %s, Body: %s, URL: %s",
+	wblogger.Debug(ctx, fmt.Sprintf("http-request (%s): Content-type: %s, Authorization: %s, Request: %s, URL: %s",
 		reqId,
 		string(reqCtx.req.Header.ContentType()),
 		trimAuth(string(reqCtx.req.Header.Peek("Authorization"))),
-		reqCtx.req.Body(), reqCtx.req.URI().FullURI()))
+		reqCtx.req.String(), reqCtx.req.URI().FullURI()))
 
 	start := time.Now()
 	if err := c.client.DoDeadline(reqCtx.req, resp, deadline); err != nil {
@@ -179,7 +179,7 @@ func (c *client) Do(ctx context.Context, path string, method string, body []byte
 	c.metrics.WriteTiming(start, method, strconv.Itoa(resp.StatusCode()), reqCtx.metricPath)
 	return res,
 		resp.StatusCode(),
-		fmt.Errorf("http request failed with code %d host: %s body: %s", resp.StatusCode(), c.host, resp.Body())
+		fmt.Errorf("http request failed with code %d host: %s resp: %s", resp.StatusCode(), c.host, resp.String())
 }
 
 func (c *client) GetObject(ctx context.Context, path string, dst interface{}, opts ...RequestOption) (int, error) {
